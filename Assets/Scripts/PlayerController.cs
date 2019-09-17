@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 50.0f;
     //reference to character controller of space marine
     private CharacterController characterController;
+    public Rigidbody head;
 
     // Start is called before the first frame update
     void Start()
@@ -22,5 +23,18 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"),0, Input.GetAxis("Vertical"));
         //Simple move is a built in function of character controller, move in specified direction
         characterController.SimpleMove(moveDirection * moveSpeed);
+    }
+
+    void FixedUpdate()
+    {
+        Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"),0, Input.GetAxis("Vertical"));
+        if (moveDirection == Vector3.zero)
+        {
+            // TODO
+        }
+        else
+        {
+            head.AddForce(transform.right * 150, ForceMode.Acceleration);
+        }
     }
 }
