@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour
 
     private void OnBecameInvisible()
     {
-        Destroy(gameObject);
+        Destroy(this.gameObject);
     }
     private void OnCollisionEnter(Collision collision)
     {

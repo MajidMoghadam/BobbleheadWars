@@ -42,13 +42,15 @@ public class PlayerController : MonoBehaviour
             head.AddForce(transform.right * 150, ForceMode.Acceleration);
         }
 
-        RaycastHit hit;
-        //cast a ray form camera to mouse position
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green);
+        RaycastHit hit; //create an empty Raycast object to be populated
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);    //cast a ray form camera to mouse position
+        Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green);   //Draws ray for debugging purposes
 
+        //Physics.Raycast draws the array, based on some parameters. Ray is 1000 units long. 
+        //QueryTriggerInteraction.Ignore to ensure that other triggers are not activated
         if (Physics.Raycast(ray, out hit, 1000, layerMask,QueryTriggerInteraction.Ignore))
         {
+            //hit point is where the player SHOULD be looking, if not make it so
             if (hit.point != currentLookTarget)
             {
                 currentLookTarget = hit.point;
