@@ -873,6 +873,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 6890c24368885094192e79994fba7005,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9bc0cca5304950942949e71d8122d994, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6890c24368885094192e79994fba7005, type: 3}
 --- !u!4 &560214527 stripped
@@ -1079,6 +1084,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 4096
+  bodyAnimator: {fileID: 2023856932}
 --- !u!143 &720312434
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1727,6 +1733,12 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2538031447164583850, guid: ed3e2b95f0443614fb25076ab40a8db4,
     type: 3}
   launchPosition: {fileID: 677994902}
+--- !u!95 &2023856932 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 6890c24368885094192e79994fba7005,
+    type: 3}
+  m_PrefabInstance: {fileID: 560214526}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2058316578 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100078, guid: 7f78b096b427d419f9918e4ae4fc4aec,
