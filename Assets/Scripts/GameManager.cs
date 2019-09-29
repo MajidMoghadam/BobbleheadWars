@@ -43,6 +43,72 @@ public class GameManager : MonoBehaviour
         actualUpgradeTime = Mathf.Abs(actualUpgradeTime);
     }
 
+
+    // Update is called once per frame
+    void Update()
+    {
+        currentUpgradeTime += Time.deltaTime;
+        currentSpawnTime += Time.deltaTime;
+
+        if (currentUpgradeTime > actualUpgradeTime)
+        {
+            if (!spawnedUpgrade)
+            {
+                int randomNumber = Random.Range(0, spawnPoints.Length - 1);
+                GameObject spawnLocation = spawnPoints[randomNumber];
+                GameObject upgrade = Instantiate(upgradePrefab) as GameObject;
+                Upgrade upgradeScript = upgrade.GetComponent<Upgrade>();
+                upgradeScript.gun = gun;
+                upgrade.transform.position =
+                spawnLocation.transform.position;
+                spawnedUpgrade = true;
+                SoundManager.Instance.PlayOneShot(SoundManager.Instance.powerUpAppear);
+            }
+        }
+
+        if (currentSpawnTime > generatedSpawnTime)
+        {
+            currentSpawnTime = 0;
+            generatedSpawnTime = Random.Range(minSpawnTime, maxSpawnTime);
+            if (aliensPerSpawn > 0 && aliensOnScreen < totalAliens)
+            {
+                List<int> previousSpawnLocations = new List<int>();
+                if (aliensPerSpawn > spawnPoints.Length)
+                {
+                    aliensPerSpawn = spawnPoints.Length - 1;
+                }
+                aliensPerSpawn = (aliensPerSpawn > totalAliens) ? aliensPerSpawn - totalAliens : aliensPerSpawn;
+                for (int i = 0; i < aliensPerSpawn; i++)
+                {
+                    if (aliensOnScreen < maxAliensOnScreen)
+                    {
+                        aliensOnScreen += 1;
+                        int spawnPoint = -1;
+                        while (spawnPoint == -1)
+                        {
+                            int randomNumber = Random.Range(0, spawnPoints.Length - 1);
+                            if (!previousSpawnLocations.Contains(randomNumber))
+                            {
+                                previousSpawnLocations.Add(randomNumber);
+                                spawnPoint = randomNumber;
+                            }
+                        }
+                        GameObject spawnLocation = spawnPoints[spawnPoint];
+                        GameObject newAlien = Instantiate(alien) as GameObject;
+                        newAlien.transform.position = spawnLocation.transform.position;
+                        Alien alienScript = newAlien.GetComponent<Alien>();
+                        alienScript.target = player.transform;
+                        Vector3 targetRotation = new Vector3(player.transform.position.x, newAlien.transform.position.y, player.transform.position.z);
+                        newAlien.transform.LookAt(targetRotation);
+
+                        alienScript.OnDestroy.AddListener(AlienDestroyed);
+                    }
+                }
+            }
+        }
+    }
+
+    /*
     // Update is called once per frame (almost like a loop, keeps repeating)
     void Update()
     {
@@ -98,15 +164,15 @@ public class GameManager : MonoBehaviour
                 //This is another chunk of preventative code. If aliensPerSpawn exceeds the maximum,
                 //then the amount of spawns will reduce.
                 aliensPerSpawn = (aliensPerSpawn > totalAliens) ? aliensPerSpawn - totalAliens : aliensPerSpawn;
-                /*
-                 could have written the above code like this:
+                
+                 //could have written the above code like this:
 
-                if(aliensPerSpawn > totalAliens){
-                    aliensPerSpawn = aliensPerSpawn - totalAliens;
-                }else{
-                    aliensPerSpawn = aliensPerSpawn;
-                }
-                 */
+                //if(aliensPerSpawn > totalAliens){
+                //    aliensPerSpawn = aliensPerSpawn - totalAliens;
+                //}else{
+                //    aliensPerSpawn = aliensPerSpawn;
+                //}
+                 
 
 
                 //the actual spawning code inside the loop
@@ -160,6 +226,9 @@ public class GameManager : MonoBehaviour
 
         }
     }
+    
+    */
+
 
     public void AlienDestroyed()
     {
