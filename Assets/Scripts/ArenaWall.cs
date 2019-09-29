@@ -10,14 +10,9 @@ public class ArenaWall : MonoBehaviour
     void Start()
     {
         GameObject arena = transform.parent.gameObject;
-arenaAnimator = arena.GetComponent<Animator>();
+        arenaAnimator = arena.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void OnTriggerEnter(Collider other)
     {
         arenaAnimator.SetBool("IsLowered", true);
@@ -28,3 +23,4 @@ arenaAnimator = arena.GetComponent<Animator>();
         arenaAnimator.SetBool("IsLowered", false);
     }
 }
+

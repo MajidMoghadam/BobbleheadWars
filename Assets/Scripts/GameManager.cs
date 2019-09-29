@@ -13,6 +13,13 @@ public class GameManager : MonoBehaviour
     //used to spawn new aliens
     //set in inspector
     public GameObject alien;
+    public GameObject upgradePrefab;
+
+    public Gun gun;
+    public float upgradeMaxTimeSpawn = 7.5f;
+    private bool spawnedUpgrade = false;
+    private float actualUpgradeTime = 0;
+    private float currentUpgradeTime = 0;
 
     //parameters to control number of aliens 
     //on screen at any one time
@@ -32,14 +39,35 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        actualUpgradeTime = Random.Range(upgradeMaxTimeSpawn - 3.0f, upgradeMaxTimeSpawn);
+        actualUpgradeTime = Mathf.Abs(actualUpgradeTime);
     }
 
     // Update is called once per frame (almost like a loop, keeps repeating)
     void Update()
     {
-        //accumulates time that's passed between each frame
-        currentSpawnTime += Time.deltaTime;
+        currentUpgradeTime += Time.deltaTime;
+        if (currentUpgradeTime > actualUpgradeTime)
+        {
+            // 1
+            if (!spawnedUpgrade)
+            {
+                // 2
+                int randomNumber = Random.Range(0, spawnPoints.Length - 1);
+                GameObject spawnLocation = spawnPoints[randomNumber];
+                // 3
+                GameObject upgrade = Instantiate(upgradePrefab) as GameObject;
+                Upgrade upgradeScript = upgrade.GetComponent<Upgrade>();
+                upgradeScript.gun = gun;
+                upgrade.transform.position = spawnLocation.transform.position;
+                // 4
+                //accumulates time that's passed between each frame
+                currentSpawnTime += Time.deltaTime;
+                spawnedUpgrade = true;
+
+                SoundManager.Instance.PlayOneShot(SoundManager.Instance.powerUpAppear);
+            }
+        }
 
         //whenever a certain amount of time has passed do the following
         if (currentSpawnTime > generatedSpawnTime)
